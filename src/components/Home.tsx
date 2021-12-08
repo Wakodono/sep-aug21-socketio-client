@@ -1,4 +1,4 @@
-import { Container, Row, Col, Form, FormControl, ListGroup, ListGroupItem, Button } from 'react-bootstrap'
+import { Container, Row, Col, Form, FormControl, ListGroup, ListGroupItem, Button, Modal } from 'react-bootstrap'
 import { useState, useEffect, FormEvent } from 'react'
 import { io } from 'socket.io-client'
 import { IUser } from '../interfaces/IUser'
@@ -31,6 +31,11 @@ const Home = () => {
   const [loggedIn, setLoggedIn] = useState(false)
   const [onlineUsers, setOnlineUsers] = useState<IUser[]>([])
   const [chatHistory, setChatHistory] = useState<IMessage[]>([])
+  const [room, setRoom] = useState<Room>('blue')
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   // every time this component renders, a connection gets established to the server
   // thanks to the io invocation at line 6
@@ -142,7 +147,7 @@ const Home = () => {
     }
   }
 
-  const [room, setRoom] = useState<Room>('blue')
+ 
 
 
 
@@ -151,10 +156,16 @@ const Home = () => {
   //roomID and userID are the same for this exercise
   const openConnectionBetweenUsers = (roomID:string)=>{
     console.log(roomID)
-    //We need to retrive usersocketID
+    socket.emit('openChatWithUser', roomID)
+    handleShow()
+    
+    //retrive usersocketID
   }
   // open modal to display chat between users
-  // exchange message between users
+  //after modal open, display chat, users, input for message
+  //display the chat (chathistory.map(chat=>()))
+  // exchange message between users (save chat history, send message between users)
+  //close modal
   return (
     <Container fluid className='px-4'>
       <Row className='my-3' style={{ height: '95vh' }}>
@@ -209,6 +220,16 @@ const Home = () => {
           </ListGroup>
         </Col>
       </Row>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+         
+        </Modal.Footer>
+      </Modal>
     </Container>
   )
 }
