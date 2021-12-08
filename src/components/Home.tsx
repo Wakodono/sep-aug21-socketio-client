@@ -144,6 +144,17 @@ const Home = () => {
 
   const [room, setRoom] = useState<Room>('blue')
 
+
+
+  //First goal, estabilish connection between users
+  //when? onclick, 
+  //roomID and userID are the same for this exercise
+  const openConnectionBetweenUsers = (roomID:string)=>{
+    console.log(roomID)
+    //We need to retrive usersocketID
+  }
+  // open modal to display chat between users
+  // exchange message between users
   return (
     <Container fluid className='px-4'>
       <Row className='my-3' style={{ height: '95vh' }}>
@@ -193,7 +204,7 @@ const Home = () => {
           <ListGroup>
             {onlineUsers.length === 0 && <ListGroupItem>No users yet!</ListGroupItem>}
             {onlineUsers.filter(user => user.room === room).map((user) => (
-              <ListGroupItem key={user.id}>{user.username}</ListGroupItem>
+              <ListGroupItem key={user.socketId} onClick={()=>openConnectionBetweenUsers(user.socketId)}>{user.username}</ListGroupItem>
             ))}
           </ListGroup>
         </Col>
